@@ -1,0 +1,10 @@
+video:
+    resource: "@VideoBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+utilisateur:
+    resource: "@UtilisateurBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
