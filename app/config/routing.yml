@@ -8,3 +8,14 @@ utilisateur:
     type:     annotation
     prefix:   /
 
+user_login:
+    path: /login
+    defaults: { _controller: UtilisateurBundle:User:showLogin }
+
+index:
+    path: /
+    defaults: { _controller: UtilisateurBundle:Default:index }
+
+index1:
+    path: /index
+    defaults: { _controller: UtilisateurBundle:Default:index }
