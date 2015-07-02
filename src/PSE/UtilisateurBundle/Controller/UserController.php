@@ -33,8 +33,8 @@ class UserController extends Controller
     	// Crée un formulaire que l'on va passer à la vue pour la connexion
 
     	$form = $this->createFormBuilder()
-    	->add('login', 'text')
-    	->add('password', 'password')
+    	->add('login', 'text', array('label' => 'Identifiant : '))
+    	->add('password', 'password', array('label' => 'Mot de passe : '))
     	->add('connection', 'submit')
     	->getForm();
 
@@ -225,12 +225,96 @@ class UserController extends Controller
 
             $session->set('userId', $utilisateur->getId());
 
-                return $this->redirect($this->generateUrl('index'));
-
+            return $this->redirect($this->generateUrl('index'));
         }
 
 
         // Lance la view avec le formulaire en paramètre
+        return $this->render('UtilisateurBundle:User:signup.html.twig', array(
+          'form' => $form->createView()
+          ));
+    }
+
+
+
+    public function adminUserAction(Request $request){
+
+// Fonction pour la modification de l'utilisateur connecté
+        $session = $request->getSession();
+
+        //Récupère l'id de l'utilisateur connecté actuellement
+        $userId = $session->get('userId');
+
+        // Récupère les informations de l'utilisateur connecté depuis la BDD
+        $em = $this->getDoctrine()->getManager();
+        $utilisateurs = $em->getRepository('UtilisateurBundle:Utilisateur')->findAll();
+
+        // Lance la view avec le formulaire en paramètre
+        return $this->render('UtilisateurBundle:User:admin.html.twig', array(
+          'utilisateurs' => $utilisateurs
+          ));
+
+    }
+
+    // Delete l'utilisateur selectionne
+    public function deleteAction($id){
+
+        // Récupère les informations de l'utilisateur sélectionné
+        $em = $this->getDoctrine()->getManager();
+        $utilisateur = $em->getRepository('UtilisateurBundle:Utilisateur')->find($id);
+        $em->remove($utilisateur);
+        $em->flush();
+
+        // Récupère les informations de l'utilisateur connecté depuis la BDD
+        $em = $this->getDoctrine()->getManager();
+        $utilisateurs = $em->getRepository('UtilisateurBundle:Utilisateur')->findAll();
+
+        // Lance la view avec le formulaire en paramètre
+        return $this->render('UtilisateurBundle:User:admin.html.twig', array(
+          'utilisateurs' => $utilisateurs
+          ));
+    }
+
+    public function editAction($id,Request $request){
+
+
+        // Récupère les informations de l'utilisateur sélectionné
+        $em = $this->getDoctrine()->getManager();
+        $utilisateur = $em->getRepository('UtilisateurBundle:Utilisateur')->find($id);
+        
+
+
+// Formulaire pour la modification des infos
+        $form = $this->createFormBuilder()
+        ->add('login', 'text', array(
+           'label' => 'Identifiant : ',
+           'data' => $utilisateur->getLogin()))
+        ->add('mail', 'email', array(
+            'label' => 'Adresse Mail : ',
+            'data' => $utilisateur->getMail()))
+        ->add('sauvegarder', 'submit')
+        ->getForm();
+
+        $form->handleRequest($request);
+
+        // Se lance lorsque le formulaire est soumis
+        if ($form->isValid()) {
+
+            $credentials = $form->getData();
+
+            // Enregistre le nouveau login dans la BDD
+            $utilisateur->setLogin($credentials['login']);
+
+            // Enregistre le nouveau @mail dans la BDD
+            $utilisateur->setMail($credentials['mail']);
+
+            // Applique les modifications de BDD
+            $em->flush();
+
+
+            return $this->redirect($this->generateUrl('admin'));
+        }
+        
         return $this->render('UtilisateurBundle:User:modify.html.twig', array(
           'form' => $form->createView()
           ));

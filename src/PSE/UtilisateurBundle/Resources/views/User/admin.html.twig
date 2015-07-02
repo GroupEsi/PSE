@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Administrer le compte</h1>
+
+{% for utilisateur in utilisateurs %}
+
+
+<ul>
+
+	<li>  {{ utilisateur.login }} </li>
+	<li>  {{ utilisateur.mail }} </li>
+	<li>	<a href = "{{ path('edit',{ 'id': utilisateur.id} ) }}" > Edit </a>	</li>
+	<li>	<a href = "{{ path('delete',{ 'id': utilisateur.id} ) }}" > Delete </a>	</li>
+
+</ul>
+
+{% endfor %}
+
+{% endblock %}

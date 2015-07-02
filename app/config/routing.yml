@@ -24,6 +24,18 @@ index:
     path: /
     defaults: { _controller: VideoBundle:Sommaire:showList }
 
+admin:
+    path: /admin
+    defaults: { _controller: UtilisateurBundle:User:adminUser}
+
+delete:
+    path: /delete/{id}
+    defaults: { _controller: UtilisateurBundle:User:delete}
+
+edit:
+    path: /edit/{id}
+    defaults: { _controller: UtilisateurBundle:User:edit}
+
 index1:
     path: /addSerie
     defaults: { _controller: VideoBundle:Sommaire:addSerie }
