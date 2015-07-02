@@ -36,7 +36,7 @@ class UserController extends Controller
     	->add('login', 'text')
     	->add('password', 'password')
     	->add('connection', 'submit')
-    	->getForm(); 
+    	->getForm();
 
     	$form->handleRequest($request);
 
@@ -44,7 +44,7 @@ class UserController extends Controller
     	if ($form->isValid()) {
 
             $credentials = $form->getData();
-            
+
             // Récupère l'utilisateur avec le login entré
             $em = $this->getDoctrine()->getManager();
             $utilisateur = $em->getRepository('UtilisateurBundle:Utilisateur')->findOneByLogin($credentials['login']);

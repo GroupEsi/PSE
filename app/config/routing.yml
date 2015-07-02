@@ -18,8 +18,16 @@ user_modify:
 
 index:
     path: /
-    defaults: { _controller: UtilisateurBundle:Default:index }
+    defaults: { _controller: VideoBundle:Sommaire:showList }
 
 index1:
-    path: /index
-    defaults: { _controller: UtilisateurBundle:Default:index }
+    path: /addSerie
+    defaults: { _controller: VideoBundle:Sommaire:addSerie }
+
+serie:
+  path: /serie/{id}
+  defaults: { _controller: VideoBundle:Sommaire:addSerie }
+
+video:
+  path: /video/{id}
+  defaults: { _controller: VideoBundle:Video:showVideo }

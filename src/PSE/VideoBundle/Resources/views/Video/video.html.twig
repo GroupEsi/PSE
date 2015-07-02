@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<h1 style="text-align:center">{{listeVideo.titre}}</h1>
+<img src="{{listeVideo.urlImage}}"/> </br>
+{{listeVideo.saison}}</br>
+{{listeVideo.episode}}</br>
+<iframe width="560" height="315" src="{{listeVideo.url}}" frameborder="0" allowfullscreen></iframe></br>
+<a href = "{{ path('serie',{ 'id': listeVideo.serieId} ) }}" >{{listeVideo.serieId}}</a></br>
+{% endblock %}
