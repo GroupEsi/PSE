@@ -33,8 +33,8 @@ class UserController extends Controller
     	// Crée un formulaire que l'on va passer à la vue pour la connexion
 
     	$form = $this->createFormBuilder()
-    	->add('login', 'text')
-    	->add('password', 'password')
+    	->add('login', 'text', array('label' => 'Identifiant : '))
+    	->add('password', 'password', array('label' => 'Mot de passe : '))
     	->add('connection', 'submit')
     	->getForm(); 
 
