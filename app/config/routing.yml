@@ -22,7 +22,7 @@ sign_up:
 
 index:
     path: /
-    defaults: { _controller: UtilisateurBundle:Default:index }
+    defaults: { _controller: VideoBundle:Sommaire:showList }
 
 admin:
     path: /admin
@@ -35,3 +35,15 @@ delete:
 edit:
     path: /edit/{id}
     defaults: { _controller: UtilisateurBundle:User:edit}
+
+index1:
+    path: /addSerie
+    defaults: { _controller: VideoBundle:Sommaire:addSerie }
+
+serie:
+  path: /serie/{id}
+  defaults: { _controller: VideoBundle:Sommaire:addSerie }
+
+video:
+  path: /video/{id}
+  defaults: { _controller: VideoBundle:Video:showVideo }

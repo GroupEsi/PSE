@@ -36,7 +36,7 @@ class UserController extends Controller
     	->add('login', 'text', array('label' => 'Identifiant : '))
     	->add('password', 'password', array('label' => 'Mot de passe : '))
     	->add('connection', 'submit')
-    	->getForm(); 
+    	->getForm();
 
     	$form->handleRequest($request);
 
@@ -44,7 +44,7 @@ class UserController extends Controller
     	if ($form->isValid()) {
 
             $credentials = $form->getData();
-            
+
             // Récupère l'utilisateur avec le login entré
             $em = $this->getDoctrine()->getManager();
             $utilisateur = $em->getRepository('UtilisateurBundle:Utilisateur')->findOneByLogin($credentials['login']);
@@ -226,7 +226,6 @@ class UserController extends Controller
             $session->set('userId', $utilisateur->getId());
 
             return $this->redirect($this->generateUrl('index'));
-
         }
 
 
@@ -315,15 +314,9 @@ class UserController extends Controller
 
             return $this->redirect($this->generateUrl('admin'));
         }
-
         
-
-        // Lance la view avec le formulaire en paramètre
         return $this->render('UtilisateurBundle:User:modify.html.twig', array(
           'form' => $form->createView()
           ));
-
-
     }
-
 }

@@ -50,9 +50,9 @@ class Serie
     private $description;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="annee", type="date")
+     * @ORM\Column(name="annee", type="text")
      */
     private $annee;
 
@@ -67,7 +67,7 @@ class Serie
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -83,14 +83,14 @@ class Serie
     public function setTitre($titre)
     {
         $this->titre = $titre;
-    
+
         return $this;
     }
 
     /**
      * Get titre
      *
-     * @return string 
+     * @return string
      */
     public function getTitre()
     {
@@ -106,14 +106,14 @@ class Serie
     public function setNbSaisons($nbSaisons)
     {
         $this->nbSaisons = $nbSaisons;
-    
+
         return $this;
     }
 
     /**
      * Get nbSaisons
      *
-     * @return integer 
+     * @return integer
      */
     public function getNbSaisons()
     {
@@ -129,14 +129,14 @@ class Serie
     public function setGenre($genre)
     {
         $this->genre = $genre;
-    
+
         return $this;
     }
 
     /**
      * Get genre
      *
-     * @return string 
+     * @return string
      */
     public function getGenre()
     {
@@ -152,14 +152,14 @@ class Serie
     public function setDescription($description)
     {
         $this->description = $description;
-    
+
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -169,20 +169,20 @@ class Serie
     /**
      * Set annee
      *
-     * @param \DateTime $annee
+     * @param string $annee
      * @return Serie
      */
     public function setAnnee($annee)
     {
         $this->annee = $annee;
-    
+
         return $this;
     }
 
     /**
      * Get annee
      *
-     * @return \DateTime 
+     * @return Serie
      */
     public function getAnnee()
     {
@@ -198,14 +198,14 @@ class Serie
     public function setUrlImage($urlImage)
     {
         $this->urlImage = $urlImage;
-    
+
         return $this;
     }
 
     /**
      * Get urlImage
      *
-     * @return string 
+     * @return string
      */
     public function getUrlImage()
     {
