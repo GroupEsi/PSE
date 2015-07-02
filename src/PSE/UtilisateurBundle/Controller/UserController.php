@@ -235,4 +235,45 @@ class UserController extends Controller
           'form' => $form->createView()
           ));
     }
+
+
+
+    public function adminUserAction(Request $request){
+
+// Fonction pour la modification de l'utilisateur connecté
+        $session = $request->getSession();
+
+        //Récupère l'id de l'utilisateur connecté actuellement
+        $userId = $session->get('userId');
+
+        // Récupère les informations de l'utilisateur connecté depuis la BDD
+        $em = $this->getDoctrine()->getManager();
+        $utilisateurs = $em->getRepository('UtilisateurBundle:Utilisateur')->findAll();
+
+        // Lance la view avec le formulaire en paramètre
+        return $this->render('UtilisateurBundle:User:admin.html.twig', array(
+          'utilisateurs' => $utilisateurs
+          ));
+
+    }
+
+    // Delete l'utilisateur selectionne
+    public function deleteAction($id){
+
+        // Récupère les informations de l'utilisateur sélectionné
+        $em = $this->getDoctrine()->getManager();
+        $utilisateur = $em->getRepository('UtilisateurBundle:Utilisateur')->find($id);
+        $em->remove($utilisateur);
+        $em->flush();
+
+        // Récupère les informations de l'utilisateur connecté depuis la BDD
+        $em = $this->getDoctrine()->getManager();
+        $utilisateurs = $em->getRepository('UtilisateurBundle:Utilisateur')->findAll();
+
+        // Lance la view avec le formulaire en paramètre
+        return $this->render('UtilisateurBundle:User:admin.html.twig', array(
+          'utilisateurs' => $utilisateurs
+          ));
+    }
+
 }

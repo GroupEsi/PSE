@@ -27,3 +27,11 @@ index:
 index1:
     path: /index
     defaults: { _controller: UtilisateurBundle:Default:index }
+
+admin:
+    path: /admin
+    defaults: { _controller: UtilisateurBundle:User:adminUser}
+
+delete:
+    path: /delete/{id}
+    defaults: { _controller: UtilisateurBundle:User:delete}
