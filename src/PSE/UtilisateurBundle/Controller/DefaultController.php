@@ -16,9 +16,6 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-    	$session = new Session();
-                var_dump($session->get('userId'));
-
         return $this->render('UtilisateurBundle:Default:index.html.twig');
     }
 }
