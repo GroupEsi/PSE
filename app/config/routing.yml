@@ -10,11 +10,15 @@ utilisateur:
 
 user_login:
     path: /login
-    defaults: { _controller: UtilisateurBundle:User:showLogin }
+    defaults: { _controller: UtilisateurBundle:User:showLogin}
 
 user_modify:
     path: /modify
     defaults: { _controller: UtilisateurBundle:User:modifyUser}
+
+sign_up:
+    path: /signup
+    defaults: { _controller: UtilisateurBundle:User:signUp}
 
 index:
     path: /

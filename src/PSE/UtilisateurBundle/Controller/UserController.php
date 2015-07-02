@@ -81,10 +81,10 @@ class UserController extends Controller
     }
 
 
+
     public function modifyUserAction(Request $request){
 
         // Fonction pour la modification de l'utilisateur connecté
-
         $session = $request->getSession();
 
         //Récupère l'id de l'utilisateur connecté actuellement
@@ -142,10 +142,10 @@ class UserController extends Controller
                     }
                     else{
 
-                    throw $this->createNotFoundException(
-                        'L\'ancien mot de passe ne correspond pas.'
-                        );
-                }
+                        throw $this->createNotFoundException(
+                            'L\'ancien mot de passe ne correspond pas.'
+                            );
+                    }
 
                 }
                 else{
@@ -160,6 +160,75 @@ class UserController extends Controller
             $em->flush();
 
         }
+
+        // Lance la view avec le formulaire en paramètre
+        return $this->render('UtilisateurBundle:User:modify.html.twig', array(
+          'form' => $form->createView()
+          ));
+    }
+
+
+
+
+
+
+
+    public function signUpAction(Request $request){
+
+        // Ouver la session pour y stocker l'id de l'utilisateur qui sera connecté
+        $session = new Session();
+
+        // Formulaire pour la modification des infos
+        $form = $this->createFormBuilder()
+        ->add('login', 'text', array(
+           'label' => 'Identifiant : '))
+        ->add('mail', 'email', array(
+            'label' => 'Adresse Mail : '))
+        ->add('password', 'password', array(
+            'label' => 'Changer de mot de passe : ',
+            'data' =>''))
+        ->add('confirm', 'password', array(
+            'label' => 'Confirmer le mot de passe : ',
+            'data' =>''))
+        ->add('sauvegarder', 'submit')
+        ->getForm();
+
+        $form->handleRequest($request);
+
+        // Se lance lorsque le formulaire est soumis
+        if ($form->isValid()) {
+
+            $credentials = $form->getData();
+
+            $utilisateur = new Utilisateur();
+            $utilisateur->setLogin($credentials['login']);
+            $utilisateur->setMail($credentials['mail']);
+
+                // Si les champs password et confirm sont égaux
+            if ($credentials['password'] == $credentials['confirm']){
+
+                // Si oui, changer le mot de passe stocké en bdd par celui entré
+                $utilisateur->setPassword(md5($credentials['password']));
+
+            }
+            else
+            {
+                throw $this->createNotFoundException(
+                    'Les mots de passe ne correspondent pas.'
+                    );
+            }
+
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($utilisateur);
+            $em->flush();
+
+            $session->set('userId', $utilisateur->getId());
+
+                return $this->redirect($this->generateUrl('index'));
+
+        }
+
 
         // Lance la view avec le formulaire en paramètre
         return $this->render('UtilisateurBundle:User:modify.html.twig', array(
