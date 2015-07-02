@@ -225,13 +225,13 @@ class UserController extends Controller
 
             $session->set('userId', $utilisateur->getId());
 
-                return $this->redirect($this->generateUrl('index'));
+            return $this->redirect($this->generateUrl('index'));
 
         }
 
 
         // Lance la view avec le formulaire en paramètre
-        return $this->render('UtilisateurBundle:User:modify.html.twig', array(
+        return $this->render('UtilisateurBundle:User:signup.html.twig', array(
           'form' => $form->createView()
           ));
     }
@@ -274,6 +274,56 @@ class UserController extends Controller
         return $this->render('UtilisateurBundle:User:admin.html.twig', array(
           'utilisateurs' => $utilisateurs
           ));
+    }
+
+    public function editAction($id,Request $request){
+
+
+        // Récupère les informations de l'utilisateur sélectionné
+        $em = $this->getDoctrine()->getManager();
+        $utilisateur = $em->getRepository('UtilisateurBundle:Utilisateur')->find($id);
+        
+
+
+// Formulaire pour la modification des infos
+        $form = $this->createFormBuilder()
+        ->add('login', 'text', array(
+           'label' => 'Identifiant : ',
+           'data' => $utilisateur->getLogin()))
+        ->add('mail', 'email', array(
+            'label' => 'Adresse Mail : ',
+            'data' => $utilisateur->getMail()))
+        ->add('sauvegarder', 'submit')
+        ->getForm();
+
+        $form->handleRequest($request);
+
+        // Se lance lorsque le formulaire est soumis
+        if ($form->isValid()) {
+
+            $credentials = $form->getData();
+
+            // Enregistre le nouveau login dans la BDD
+            $utilisateur->setLogin($credentials['login']);
+
+            // Enregistre le nouveau @mail dans la BDD
+            $utilisateur->setMail($credentials['mail']);
+
+            // Applique les modifications de BDD
+            $em->flush();
+
+
+            return $this->redirect($this->generateUrl('admin'));
+        }
+
+        
+
+        // Lance la view avec le formulaire en paramètre
+        return $this->render('UtilisateurBundle:User:modify.html.twig', array(
+          'form' => $form->createView()
+          ));
+
+
     }
 
 }
