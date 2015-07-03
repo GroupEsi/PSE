@@ -11,6 +11,8 @@ use PSE\UtilisateurBundle\Entity\Utilisateur;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 
+use Symfony\Component\HttpFoundation\Response;
+
 
 class UserController extends Controller
 {
@@ -80,10 +82,8 @@ class UserController extends Controller
           ));
     }
 
-
-
-    public function modifyUserAction(Request $request){
-
+    public function userLoginAction(Request $request)
+    {
         // Fonction pour la modification de l'utilisateur connecté
         $session = $request->getSession();
 
@@ -94,11 +94,35 @@ class UserController extends Controller
         $em = $this->getDoctrine()->getManager();
         $utilisateur = $em->getRepository('UtilisateurBundle:Utilisateur')->find($userId);
 
+        $userLogin = "Invité";
+        if ($utilisateur != null) {
+        $userLogin = $utilisateur->getLogin();
+        }
+
+        return new Response($userLogin);
+    }
+
+
+    public function modifyUserAction(Request $request){
+
+        // Fonction pour la modification de l'utilisateur connecté
+        $session = $request->getSession();
+
+        //Récupère l'id de l'utilisateur connecté actuellement
+        $userId = $session->get('userId');
+
+        if($userId == null){
+            return $this->redirect($this->generateUrl('index'));
+        }
+        // Récupère les informations de l'utilisateur connecté depuis la BDD
+        $em = $this->getDoctrine()->getManager();
+        $utilisateur = $em->getRepository('UtilisateurBundle:Utilisateur')->find($userId);
+
         // Formulaire pour la modification des infos
         $form = $this->createFormBuilder()
         ->add('login', 'text', array(
-           'label' => 'Identifiant : ',
-           'data' => $utilisateur->getLogin()))
+         'label' => 'Identifiant : ',
+         'data' => $utilisateur->getLogin()))
         ->add('mail', 'email', array(
             'label' => 'Adresse Mail : ',
             'data' => $utilisateur->getMail()))
@@ -181,7 +205,7 @@ class UserController extends Controller
         // Formulaire pour la modification des infos
         $form = $this->createFormBuilder()
         ->add('login', 'text', array(
-           'label' => 'Identifiant : '))
+         'label' => 'Identifiant : '))
         ->add('mail', 'email', array(
             'label' => 'Adresse Mail : '))
         ->add('password', 'password', array(
@@ -292,8 +316,8 @@ class UserController extends Controller
 // Formulaire pour la modification des infos
         $form = $this->createFormBuilder()
         ->add('login', 'text', array(
-           'label' => 'Identifiant : ',
-           'data' => $utilisateur->getLogin()))
+         'label' => 'Identifiant : ',
+         'data' => $utilisateur->getLogin()))
         ->add('mail', 'email', array(
             'label' => 'Adresse Mail : ',
             'data' => $utilisateur->getMail()))
@@ -324,4 +348,18 @@ class UserController extends Controller
           'form' => $form->createView()
           ));
     }
+
+    public function disconnectAction(Request $request){
+
+        // Fonction pour la déconnection de l'utilisation
+
+        $session = $request->getSession();
+
+        // Vide la variable userId de session
+        $session->set('userId', '');
+
+        // Lance la view avec le formulaire en paramètre
+        return $this->redirect($this->generateUrl('index'));
+    }
+
 }

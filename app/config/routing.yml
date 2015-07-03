@@ -51,3 +51,7 @@ video:
 delete_comment:
     path: /deleteComment/{id}/{videoId}
     defaults: { _controller: VideoBundle:Video:deleteComment }
+
+disconnect:
+    path: /disconnect
+    defaults: { _controller: UtilisateurBundle:User:disconnect }
