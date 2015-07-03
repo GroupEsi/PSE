@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8" />
-    <title>{% block title %}Welcome!{% endblock %}</title>
-    {% block stylesheets %}{% endblock %}
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <meta charset="UTF-8" />
+  <title>{% block title %}Welcome!{% endblock %}</title>
+  {% block stylesheets %}{% endblock %}
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     <style type="text/css">
@@ -22,11 +22,14 @@
     <br>
 <center>
     <div class="btn-group" role="group" aria-label="...">
-      <a class="btn btn-default" href = "{{ path('index') }}" >Sommaire</a>
-      <a class="btn btn-default" href = "{{ path('user_login') }}" >Connection</a>
-      <a class="btn btn-default" href = "{{ path('sign_up') }}" >Inscription</a>
-      <a class="btn btn-default" href = "{{ path('user_modify') }}" >Modification</a>
-      <!--<a class="btn btn-default" href = "{{ path('user_modify') }}" ></a>// !-->
+      
+    <a class="btn btn-default" href = "{{ path('index') }}" >Sommaire</a>
+    <a class="btn btn-default" href = "{{ path('user_login') }}" >Connection</a>
+    <a class="btn btn-default" href = "{{ path('disconnect') }}" >Déconnection</a>
+    <a class="btn btn-default" href = "{{ path('sign_up') }}" >Inscription</a>
+    <a class="btn btn-default" href = "{{ path('user_modify') }}" >Modification</a>
+      {{ render(controller('UtilisateurBundle:User:userLogin')) }}
+    
   </div>
 </center>
 

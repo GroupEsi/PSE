@@ -18,9 +18,10 @@ Episode : {{listeVideo.episode}}</br>
 
 <ul>
 
-	  {{ comment.content }}
+	{{ comment.content }}
 
 	<li>
+
 		{% for utilisateur in utilisateurs %}
 
 		{% if utilisateur.id == comment.userId %}
@@ -31,6 +32,13 @@ Episode : {{listeVideo.episode}}</br>
 
 		{% endfor %}
 	</li>
+
+
+		{% if userId == 1 %}
+<li>
+		<a href = "{{ path('delete_comment',{ 'id': comment.id, 'videoId': videoId } ) }}" > Delete </a>
+</li>
+		{% endif %}
 
 
 </ul>
