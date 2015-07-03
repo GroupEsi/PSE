@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use PSE\VideoBundle\Entity\Serie;
+use PSE\VideoBundle\Entity\Comment;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -24,18 +25,63 @@ class VideoController extends Controller
   public function showVideoAction(Request $request, $id)
   {
 
-    // Ouver la session pour y stocker l'id de l'utilisateur qui sera connecté
-    //$session = $request->getSession();
-    //$videoId = $session->get('id');
-    // Récupère la video avec l'id entré
+    // Ouvre la session pour y stocker l'id de l'utilisateur qui sera connecté
+    $session = $request->getSession();
+
+
+    // Récupère les informations de la video avec l'id entré
     $em = $this->getDoctrine()->getManager();
     $listeVideo = $em->getRepository('VideoBundle:Video')->find($id);
 
+    // Récupère la table comment pour afficher les commentaire en bas de la vidéo
+    $comments = $em->getRepository('VideoBundle:Comment')->findByVideoId($id);
+
+    // Récupère la table utilisateur pour les afficher dans les commentaires
+    $utilisateurs = $em->getRepository('UtilisateurBundle:Utilisateur')->findAll();
+
+    // Crée un formulaire pour submit les commentaires
+    $form = $this->createFormBuilder()
+    ->add('content', 'text', array('label' => ' '))
+    ->add('Commenter', 'submit')
+    ->getForm();
+
+    // S'active lorsque le formulaire est soumis
+    $form->handleRequest($request);
+
+    if ($form->isValid()) {
+
+      // Récupère les données du formulaire
+      $credentials = $form->getData();
+
+      // Récupère l'id de l'utilisateur connecté depuis la Session
+      $user_id = $session->get('userId');
+
+      // Crée un nouveau commentaire, le remplit avec le contenu, id de l'user, id de la vidéo
+      $comment = new Comment();
+      $comment->setContent($credentials['content']);
+      $comment->setUserId($user_id);
+      $comment->setVideoId($id);
+
+      $datePublish = new \DateTime();
+
+      $comment->setDatePublish($datePublish);
+
+      $em = $this->getDoctrine()->getManager();
+
+      // Applique les modifications à la base de donnée
+      $em->persist($comment);
+      $em->flush();
+
+      return $this->redirect($this->generateUrl('video', array('id' => $id)));
+    }
 
     // Ouvre la vue login avec le formulaire en paramètre
     return $this->render('VideoBundle:Video:video.html.twig', array(
-      'listeVideo'=> $listeVideo
-    ));
+      'listeVideo'=> $listeVideo,
+      'comments'=> $comments,
+      'utilisateurs'=> $utilisateurs,
+      'form' => $form->createView() 
+      ));
   }
 
 
