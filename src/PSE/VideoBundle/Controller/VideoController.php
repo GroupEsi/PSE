@@ -80,7 +80,7 @@ class VideoController extends Controller
       'listeVideo'=> $listeVideo,
       'comments'=> $comments,
       'utilisateurs'=> $utilisateurs,
-      'form' => $form->createView() 
+      'form' => $form->createView()
       ));
   }
 
