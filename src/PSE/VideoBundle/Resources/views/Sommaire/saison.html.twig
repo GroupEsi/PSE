@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<h1 style="text-align:center">Liste des épisodes de {{serie.titre}}</h1>
+{%for episode in listeSaison%}
+<p><img src="{{episode.urlImage}}"/> </br>
+Titre : <a href = "{{ path('video',{ 'id': episode.id}) }}" >{{episode.titre}}</a>
+Saison : {{episode.saison}}
+Episode : {{episode.episode}}</p>
+{%endfor%}
+<a href = "{{ path('addVideo',{ 'id': serie.id}) }}" >Add Video</a>
+{% endblock %}

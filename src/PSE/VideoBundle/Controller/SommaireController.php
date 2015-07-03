@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use PSE\VideoBundle\Entity\Serie;
+use PSE\VideoBundle\Entity\Video;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -38,6 +39,21 @@ class SommaireController extends Controller
     // Ouvre la vue login avec le formulaire en paramètre
     return $this->render('VideoBundle:Sommaire:sommaire.html.twig', array(
       'listeSeries'=> $listeSeries
+    ));
+  }
+
+  public function showSaisonAction(Request $request, $id)
+  {
+    // Récupère l'utilisateur avec le login entré
+    $em = $this->getDoctrine()->getManager();
+    $listeSaison = $em->getRepository('VideoBundle:video')->findBySerieId($id);
+    $Serie = $em->getRepository('VideoBundle:serie')->find($id);
+
+
+    // Ouvre la vue login avec le formulaire en paramètre
+    return $this->render('VideoBundle:Sommaire:saison.html.twig', array(
+      'listeSaison'=> $listeSaison,
+      'serie' => $Serie
     ));
   }
 
@@ -113,11 +129,11 @@ public function addSerieAction(Request $request){
         ));
       }
 
-      public function addVideoAction(Request $request){
+      public function addVideoAction(Request $request, $id){
         // Récupère les informations de l'utilisateur connecté depuis la BDD
         $em = $this->getDoctrine()->getManager();
         $newVideo = new video();
-        $listeSeries = $em->getRepository('VideoBundle:serie')->findAll();
+        $Series = $em->getRepository('VideoBundle:serie')->find($id);
 
         // Formulaire pour la modification des infos
         $form = $this->createFormBuilder()
@@ -127,20 +143,13 @@ public function addSerieAction(Request $request){
           ->add('url', 'text', array(
             'label' => 'Url de l\'iframe : ',
             'data' =>''))
-            ->add('serie_id', 'choice', array(
-              'label' => 'Description : ', 'choice', array(
-                'choices' => array(
-                  for ($serie in $listeSeries)
-                  {
-                    $serie.id => $serie.titre
-                    }
-                  ),
-                  'multiple' => false,
-                  'expended' => false))
-                  ->add('saison', 'integer', array(
+            ->add('serie_id', 'text', array(
+              'label' => 'Serie id : ',
+              'data' => $Series-> getTitre()))
+                  ->add('saison', 'text', array(
                     'label' => 'Saison : ',
                     'data' =>''))
-                    ->add('episode', 'integer', array(
+                    ->add('episode', 'text', array(
                       'label' => 'Episode : ',
                       'data' =>''))
                       ->add('urlImage', 'text', array(
@@ -154,25 +163,25 @@ public function addSerieAction(Request $request){
                   // Se lance lorsque le formulaire est soumis
                   if ($form->isValid()) {
 
-                    $serie = $form->getData();
+                    $video = $form->getData();
 
                     // Enregistre le nouveau titre dans la BDD
-                    $newVideo->setTitre($serie['titre']);
+                    $newVideo->setTitre($video['titre']);
 
                     // Enregistre le nouveau nbSaisons dans la BDD
-                    $newVideo->setUrl($serie['url']);
+                    $newVideo->setUrl($video['url']);
 
                     // Enregistre le nouveau genre dans la BDD
-                    $newVideo->setSerieId($serie['serie_id']);
+                    $newVideo->setSerieId($id);
 
                     // Enregistre le nouveau description dans la BDD
-                    $newVideo->setSaison($serie['saison']);
+                    $newVideo->setSaison($video['saison']);
 
                     // Enregistre le nouveau annee dans la BDD
-                    $newVideo->setEpisode($serie['episode']);
+                    $newVideo->setEpisode($video['episode']);
 
                     // Enregistre le nouveau urlImage dans la BDD
-                    $newVideo->setUrlImage($serie['urlImage']);
+                    $newVideo->setUrlImage($video['urlImage']);
 
                     // Applique les modifications de BDD
                     $em->persist($newVideo);
