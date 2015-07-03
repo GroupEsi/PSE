@@ -1,4 +1,10 @@
+Importer la base de données symfony.sql (à la racine).
+L'acces est root et pas de mot de passe.
 
+Utilisateur :
+l'admin : login : admin passwd : admin
+Tanguy : login : Tanguy passwd : tanguy
+Marlene : login : Marlene passwd : marlene
 
 Le 1er Compte créé est le compte Admin
 http://localhost/PhpEsi/web/app_dev.php/admin :
