@@ -1,7 +1,10 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 <h1 style="text-align:center">Liste des séries</h1>
+<p>
 {%for serie in listeSeries%}
 <a href = "{{ path('serie',{ 'id': serie.id} ) }}" >{{serie.titre}}</br>
 {%endfor%}
+</p>
+<a href = "{{ path('addSerie')}}" >Add Serie</a>
 {% endblock %}

@@ -36,13 +36,17 @@ edit:
     path: /edit/{id}
     defaults: { _controller: UtilisateurBundle:User:edit}
 
-index1:
+addSerie:
     path: /addSerie
     defaults: { _controller: VideoBundle:Sommaire:addSerie }
 
+addVideo:
+    path: /serie/{id}/addVideo
+    defaults: { _controller: VideoBundle:Sommaire:addVideo }
+
 serie:
   path: /serie/{id}
-  defaults: { _controller: VideoBundle:Sommaire:addSerie }
+  defaults: { _controller: VideoBundle:Sommaire:showSaison }
 
 video:
   path: /video/{id}

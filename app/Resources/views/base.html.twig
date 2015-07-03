@@ -10,22 +10,28 @@
   <!-- Optional theme -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 
-  <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <style type="text/css">
+        body{background-color: #8A6F6F !important}
+    </style>
 </head>
 <body>
-  <img src="{{ asset('bundles/framework/images/bannieresommaire.png') }}">
-  <br>
-
-  <div class="btn-group" role="group" aria-label="...">
+  <center>
+    <img src="{{ asset('bundles/framework/images/bannieresommaire.png') }}">
+  </center>
+    <br>
+<center>
+    <div class="btn-group" role="group" aria-label="...">
+      
     <a class="btn btn-default" href = "{{ path('index') }}" >Sommaire</a>
     <a class="btn btn-default" href = "{{ path('user_login') }}" >Connection</a>
     <a class="btn btn-default" href = "{{ path('disconnect') }}" >Déconnection</a>
     <a class="btn btn-default" href = "{{ path('sign_up') }}" >Inscription</a>
     <a class="btn btn-default" href = "{{ path('user_modify') }}" >Modification</a>
-    <a class="btn btn-default" >
       {{ render(controller('UtilisateurBundle:User:userLogin')) }}
-    </a>
+    
   </div>
+</center>
 
 
   {% block body %}{% endblock %}
