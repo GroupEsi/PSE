@@ -228,7 +228,6 @@ class UserController extends Controller
             return $this->redirect($this->generateUrl('index'));
         }
 
-
         // Lance la view avec le formulaire en paramètre
         return $this->render('UtilisateurBundle:User:signup.html.twig', array(
           'form' => $form->createView()
@@ -239,11 +238,17 @@ class UserController extends Controller
 
     public function adminUserAction(Request $request){
 
-// Fonction pour la modification de l'utilisateur connecté
+        // Fonction pour la modification de l'utilisateur connecté
         $session = $request->getSession();
 
         //Récupère l'id de l'utilisateur connecté actuellement
         $userId = $session->get('userId');
+
+        if ($userId != 1){
+
+            return $this->redirect($this->generateUrl('index'));
+
+        }
 
         // Récupère les informations de l'utilisateur connecté depuis la BDD
         $em = $this->getDoctrine()->getManager();

@@ -47,3 +47,7 @@ serie:
 video:
   path: /video/{id}
   defaults: { _controller: VideoBundle:Video:showVideo }
+
+delete_comment:
+    path: /deleteComment/{id}/{videoId}
+    defaults: { _controller: VideoBundle:Video:deleteComment }

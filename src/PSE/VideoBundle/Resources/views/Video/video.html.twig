@@ -18,8 +18,8 @@
 
 <ul>
 
-	  {{ comment.content }} 
-		
+	{{ comment.content }} 
+
 	<li>  
 		{% for utilisateur in utilisateurs %}
 
@@ -32,6 +32,13 @@
 		{% endfor %}
 	</li>
 
+		
+		{% if userId == 1 %}
+<li>
+		<a href = "{{ path('delete_comment',{ 'id': comment.id, 'videoId': videoId } ) }}" > Delete </a>	
+</li>
+		{% endif %}
+	
 
 </ul>
 

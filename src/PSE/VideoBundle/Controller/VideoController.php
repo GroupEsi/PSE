@@ -28,6 +28,8 @@ class VideoController extends Controller
     // Ouvre la session pour y stocker l'id de l'utilisateur qui sera connecté
     $session = $request->getSession();
 
+    // Récupère l'id de l'utilisateur connecté depuis la Session
+    $userId = $session->get('userId');
 
     // Récupère les informations de la video avec l'id entré
     $em = $this->getDoctrine()->getManager();
@@ -53,13 +55,10 @@ class VideoController extends Controller
       // Récupère les données du formulaire
       $credentials = $form->getData();
 
-      // Récupère l'id de l'utilisateur connecté depuis la Session
-      $user_id = $session->get('userId');
-
       // Crée un nouveau commentaire, le remplit avec le contenu, id de l'user, id de la vidéo
       $comment = new Comment();
       $comment->setContent($credentials['content']);
-      $comment->setUserId($user_id);
+      $comment->setUserId($userId);
       $comment->setVideoId($id);
 
       $datePublish = new \DateTime();
@@ -72,6 +71,7 @@ class VideoController extends Controller
       $em->persist($comment);
       $em->flush();
 
+      // Recharge la page avec les nouvelles informations
       return $this->redirect($this->generateUrl('video', array('id' => $id)));
     }
 
@@ -80,10 +80,23 @@ class VideoController extends Controller
       'listeVideo'=> $listeVideo,
       'comments'=> $comments,
       'utilisateurs'=> $utilisateurs,
+      'userId'=> $userId,
+      'videoId'=> $id,
       'form' => $form->createView() 
       ));
   }
 
+public function deleteCommentAction(Request $request, $id, $videoId)
+  {
 
+    // Récupère les informations du commentaire sélectionné et le supprime de la BDD
+        $em = $this->getDoctrine()->getManager();
+        $comment = $em->getRepository('VideoBundle:Comment')->find($id);
+        $em->remove($comment);
+        $em->flush();
 
+      // Recharge la page avec les nouvelles informations
+      return $this->redirect($this->generateUrl('video', array('id' => $videoId)));
+
+  }
 }
